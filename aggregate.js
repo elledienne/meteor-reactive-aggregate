@@ -2,7 +2,8 @@ ReactiveAggregate = function (sub, collection, pipeline, options) {
   var defaultOptions = {
     observeSelector: {},
     observeOptions: {},
-    clientCollection: collection._name
+    clientCollection: collection._name,
+    callReady: true
   };
   options = _.extend(defaultOptions, options);
 
@@ -47,7 +48,9 @@ ReactiveAggregate = function (sub, collection, pipeline, options) {
   // send an initial result set to the client
   update();
   // mark the subscription as ready
-  sub.ready();
+  if (options.callReady) {
+    sub.ready();
+  }
 
   // stop observing the cursor when the client unsubscribes
   sub.onStop(function () {
